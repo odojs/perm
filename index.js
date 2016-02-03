@@ -79,15 +79,15 @@ module.exports = function() {
       }
       return descendants;
     },
-    membership: function(from) {
-      return res.ancestors(from).concat([from]);
+    members: function(from) {
+      return [from].concat(res.ancestors(from));
     },
     permissions: function(from) {
-      var i, len, member, membership, permissions;
-      membership = res.membership(from).concat(res.membership('*'));
+      var i, len, member, members, permissions;
+      members = res.members(from).concat(res.members('*'));
       permissions = [];
-      for (i = 0, len = membership.length; i < len; i++) {
-        member = membership[i];
+      for (i = 0, len = members.length; i < len; i++) {
+        member = members[i];
         if (res._permissions[member] == null) {
           continue;
         }
@@ -96,10 +96,10 @@ module.exports = function() {
       return permissions;
     },
     can: function(from, to) {
-      var i, len, member, membership;
-      membership = res.membership(from).concat(res.membership('*'));
-      for (i = 0, len = membership.length; i < len; i++) {
-        member = membership[i];
+      var i, len, member, members;
+      members = res.members(from).concat(res.members('*'));
+      for (i = 0, len = members.length; i < len; i++) {
+        member = members[i];
         if (res._permissions[member] == null) {
           continue;
         }

@@ -43,18 +43,18 @@ module.exports = ->
         current = current.concat res.children check for check in processing
         processing = current
       descendants
-    membership: (from) ->
-      res.ancestors(from).concat [from]
+    members: (from) ->
+      [from].concat res.ancestors from
     permissions: (from) ->
-      membership = res.membership(from).concat res.membership '*'
+      members = res.members(from).concat res.members '*'
       permissions = []
-      for member in membership
+      for member in members
         continue if !res._permissions[member]?
         permissions = permissions.concat Object.keys res._permissions[member]
       permissions
     can: (from, to) ->
-      membership = res.membership(from).concat res.membership '*'
-      for member in membership
+      members = res.members(from).concat res.members '*'
+      for member in members
         continue if !res._permissions[member]?
         return yes if res._permissions[member][to]?
         return yes if res._permissions[member]['*']?
